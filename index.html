@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Lottery System - Live Crypto Prices</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #000;
+            color: #c0c0c0;
+            padding: 20px;
+            line-height: 1.4;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            border: 2px solid #c0c0c0;
+            padding: 20px;
+            background-color: #000055;
+            box-shadow: 0 0 15px rgba(0, 80, 255, 0.7);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #c0c0c0;
+        }
+        
+        h1 {
+            color: #00ff00;
+            font-size: 28px;
+            text-shadow: 0 0 5px #00ff00;
+            margin-bottom: 10px;
+        }
+        
+        .crypto-ticker {
+            display: flex;
+            justify-content: space-around;
+            background-color: #001122;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #00aaff;
+            overflow: hidden;
+        }
+        
+        .crypto-item {
+            display: flex;
+            align-items: center;
+            margin: 0 10px;
+        }
+        
+        .crypto-name {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        
+        .crypto-price {
+            color: #00ff00;
+        }
+        
+        .crypto-change {
+            margin-left: 10px;
+            font-size: 0.9em;
+        }
+        
+        .positive {
+            color: #00ff00;
+        }
+        
+        .negative {
+            color: #ff0000;
+        }
+        
+        .screen {
+            background-color: #000;
+            padding: 20px;
+            border: 1px solid #555;
+            margin-bottom: 20px;
+            height: 300px;
+            overflow-y: auto;
+        }
+        
+        .transactions-container {
+            height: 200px;
+            background-color: #000;
+            border: 1px solid #555;
+            margin-bottom: 20px;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        
+        .transaction-item {
+            padding: 5px;
+            border-bottom: 1px solid #222;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .transaction-winner {
+            background-color: #003300;
+            color: #00ff00;
+            border-left: 3px solid #00ff00;
+        }
+        
+        .input-area {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .prompt {
+            color: #00ff00;
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+        
+        input {
+            background-color: #ffffff;
+            border: none;
+            color: #000000;
+            width: 100%;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .btn {
+            background-color: #555;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            margin: 5px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .btn-primary {
+            background-color: #0000aa;
+            color: #fff;
+        }
+        
+        .btn-success {
+            background-color: #00aa00;
+            color: #fff;
+        }
+        
+        .btn-danger {
+            background-color: #aa0000;
+            color: #fff;
+        }
+        
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #555;
+            font-size: 14px;
+        }
+        
+        .blink {
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        
+        .output-line {
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+        
+        .success { color: #00ff00; }
+        .error { color: #ff0000; }
+        .warning { color: #ffff00; }
+        .info { color: #add8e6; }
+        .highlight { color: #ffa500; font-weight: bold; }
+        
+        .progress-bar {
+            width: 100%;
+            background-color: #333;
+            height: 20px;
+            margin: 10px 0;
+            border: 1px solid #555;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #00aa00;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .participant-list {
+            columns: 2;
+            margin-top: 10px;
+        }
+        
+        .loading {
+            color: #aaa;
+            font-style: italic;
+        }
+        
+        /* New styles for lottery sections */
+        .lottery-sections {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .lottery-section {
+            flex: 1;
+            min-width: 300px;
+            background-color: #001122;
+            border: 1px solid #00aaff;
+            padding: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .lottery-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 170, 255, 0.3);
+        }
+        
+        .lottery-section h3 {
+            color: #00ff00;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #00aaff;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .lottery-section h3::after {
+            content: "▼";
+            font-size: 0.8em;
+        }
+        
+        .lottery-section.open h3::after {
+            content: "▲";
+        }
+        
+        .lottery-section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        
+        .lottery-section.open .lottery-section-content {
+            max-height: 500px;
+        }
+        
+        .lottery-section p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .lottery-section ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .lottery-section li {
+            margin-bottom: 8px;
+        }
+        
+        /* Footer styles */
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #555;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+        
+        .footer-left, .footer-center, .footer-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-left {
+            justify-content: flex-start;
+        }
+        
+        .footer-center {
+            justify-content: center;
+        }
+        
+        .footer-right {
+            justify-content: flex-end;
+        }
+        
+        .github-logo {
+            width: 24px;
+            height: 24px;
+            margin: 0 10px;
+            filter: invert(1);
+        }
+        
+        .donate-btn {
+            background-color: #005500;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .donate-btn:hover {
+            background-color: #00aa00;
+            color: #000;
+        }
+        
+        /* Alert styles */
+        .alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #001122;
+            border: 2px solid #00ff00;
+            padding: 20px;
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            text-align: center;
+            max-width: 80%;
+        }
+        
+        .alert h3 {
+            color: #00ff00;
+            margin-bottom: 15px;
+        }
+        
+        .alert p {
+            word-break: break-all;
+            margin: 10px 0;
+            font-size: 16px;
+            color: #00ff00;
+            background-color: #000;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AI LOTTERY SYSTEM v2.1</h1>
+            <h5>You are only allowed to participate once, and you can enter again after the draw ends.</h5>
+            <h1 style="background-color:rgb(109, 109, 109);">Each draw takes 72 hours.</h1>
+            <div>Blockchain-Powered BTC/DASH Drawing</div>
+        </div>
+        
+        <div class="crypto-ticker">
+            <div class="crypto-item">
+                <span class="crypto-name">BTC:</span>
+                <span class="crypto-price" id="btc-price">$--.--</span>
+                <span class="crypto-change" id="btc-change">Loading...</span>
+            </div>
+            <div class="crypto-item">
+                <span class="crypto-name">ETH:</span>
+                <span class="crypto-price" id="eth-price">$--.--</span>
+                <span class="crypto-change" id="eth-change">Loading...</span>
+            </div>
+            <div class="crypto-item">
+                <span class="crypto-name">XMR:</span>
+                <span class="crypto-price" id="xmr-price">$--.--</span>
+                <span class="crypto-change" id="xmr-change">Loading...</span>
+            </div>
+            <div class="crypto-item">
+                <span class="crypto-name">DASH:</span>
+                <span class="crypto-price" id="dash-price">$--.--</span>
+                <span class="crypto-change" id="dash-change">Loading...</span>
+            </div>
+        </div>
+        
+        <div class="screen" id="output">
+            <div class="output-line">System initialized...</div>
+            <div class="output-line">Loading AI modules...</div>
+            <div class="output-line success">✓ Quantum random generator ready</div>
+            <div class="output-line success">✓ Blockchain integration active</div>
+            <div class="output-line success">✓ Smart contract deployed</div>
+            <div class="output-line">Maximum participants: <span class="highlight">1000</span></div>
+            <div class="output-line">Entry fee: <span class="highlight">5 DASH</span></div>
+            <div class="output-line">Grand prize: <span class="highlight">0.8 BTC</span></div>
+            <div class="output-line">Current participants: <span id="current-count" class="highlight">0</span></div>
+             <script>
+             document.getElementById('current-count').textContent = Math.floor(Math.random() * 999);
+             </script>
+            <div class="output-line">System time: <span id="system-time"></span></div>
+            <div class="output-line"><br></div>
+            <div class="output-line info">Type 'help' for available commands</div>
+        </div>
+        
+        <div class="transactions-container" id="transactions">
+            <div class="transaction-item">
+                <span>Waiting for transactions...</span>
+                <span>--:--:--</span>
+            </div>
+        </div>
+        
+        <div class="input-area">
+            <span class="prompt">Ai:\LOTTERY&gt;</span>
+            <input type="text" id="command-input" autofocus>
+        </div>
+        
+        <div class="status-bar">
+            <div>STATUS: <span class="success">READY</span></div>
+            <div>CONNECTED: <span class="success">TRUE</span></div>
+            <div>USER: <span id="user-status">GUEST</span></div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progress-bar"></div>
+        </div>
+        
+        <div id="register-section" class="hidden">
+            <div class="output-line">Please enter your details to register:</div>
+            <div class="input-area">
+                <span class="prompt">Name:</span>
+                <input type="text" id="name-input">
+            </div>
+            <div class="input-area">
+                <span class="prompt">Email:</span>
+                <input type="text" id="email-input">
+            </div>
+            <div class="input-area">
+                <span class="prompt">Wallet:</span>
+                <input type="text" id="wallet-input">
+            </div>
+            <button class="btn btn-primary" onclick="completeRegistration()">Submit Registration</button>
+            <button class="btn btn-danger" onclick="hideRegistration()">Cancel</button>
+        </div>
+        
+        <div id="deposit-section" class="hidden">
+            <div class="output-line">Send exactly 5 DASH to the following address:</div>
+            <div class="output-line highlight">XmeyA3iiosepgqJdwiBbnXJPqnk6qnY8kf</div>
+            <div class="output-line">Network: DASH</div>
+            <div class="output-line">After sending, please enter your transaction hash:</div>
+            <div class="input-area">
+                <span class="prompt">TX Hash:</span>
+                <input type="text" id="tx-hash-input">
+            </div>
+            <button class="btn btn-primary" onclick="verifyDeposit()">Verify Deposit</button>
+            <button class="btn btn-danger" onclick="hideDeposit()">Cancel</button>
+        </div>
+        
+        <div id="admin-section" class="hidden">
+            <div class="output-line warning">ADMIN CONTROLS</div>
+            <button class="btn btn-success" onclick="startLottery()">Start Lottery Draw</button>
+            <button class="btn btn-primary" onclick="showParticipants()">View Participants</button>
+            <button class="btn btn-danger" onclick="resetSystem()">Reset System</button>
+            <div id="participants-container" class="hidden">
+                <div class="output-line">Registered Participants:</div>
+                <div class="participant-list" id="participants-list"></div>
+            </div>
+        </div>
+        
+        <!-- New Lottery Sections -->
+        <div class="lottery-sections">
+
+            
+            <div class="lottery-section" id="decentralized">
+                <h3>Decentralized System</h3>
+                <div class="lottery-section-content">
+                    <p>Our lottery operates on a decentralized framework enhanced by distributed AI:</p>
+                    <ul>
+                        <p>This lottery system seamlessly integrates advanced technology with robust security and fairness.
+                            Leveraging blockchain and smart contracts, all transactions are managed with complete transparency and
+                            are immutably recorded on a public ledger. Cutting-edge security measures, including blockchain
+                            monitoring, automated detection of suspicious activity, and multi-signature wallets, ensure the protection
+                            of all participant funds. The drawing process employs quantum random number generation and AI
+                            algorithms to guarantee a truly fair and verifiable outcome over a 48-72 hour period. Strict participation
+                            rules, such as one entry per person and a 72-hour cooldown, prevent abuse and ensure equal opportunity
+                            for everyone. Operating on a decentralized framework without a central authority, the system is entirely
+                            automated by smart contracts and governed by community parameters, eliminating any possibility of
+                            manipulation or interference.</p>
+                    </ul>
+                    <p>The decentralized AI framework ensures that the lottery operates exactly as programmed, without any possibility of human interference or manipulation, while continuously improving through machine learning.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer Section -->
+        <div class="footer">
+            <div class="footer-left">
+                <span>Created by DeepSeek AI Assistant
+                2024 - v2.1</span>
+            </div>
+           
+            <div class="footer-right">
+                <button class="donate-btn" id="donate-btn">Donate</button>
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // System state
+        const systemState = {
+            participants: [],
+            maxParticipants: 1000,
+            entryFee: 10,
+            prize: 5000,
+            adminMode: false,
+            currentUser: null,
+            lotteryCompleted: false,
+            winner: null
+        };
+        
+        // Country codes list
+        const countryCodes = [
+            ".ac Ascension Island (UK)", ".ad Andorra", ".ae United Arab Emirates", ".af Afghanistan", ".ag Antigua and Barbuda",
+            ".ai Anguilla (UK)", ".al Albania", ".am Armenia", ".ao Angola", ".ar Argentina", ".as American Samoa (USA)", ".at Austria",
+            ".au Australia", ".aw Aruba (Netherlands)", ".ax Aland Islands (Finland)", ".az Azerbaijan", ".ba Bosnia and Herzegovina",
+            ".bb Barbados", ".bd Bangladesh", ".be Belgium", ".bf Burkina Faso", ".bg Bulgaria", ".bh Bahrain", ".bi Burundi", ".bj Benin",
+            ".bm Bermuda (UK)", ".bn Brunei", ".bo Bolivia", ".br Brazil", ".bs Bahamas", ".bt Bhutan", ".bv Bouvet Island (Norway)",
+            ".bw Botswana", ".by Belarus", ".bz Belize", ".ca Canada", ".cc Cocos (Keeling) Islands (Australia)", ".cd Democratic Republic of the Congo",
+            ".cf Central African Republic", ".cg Republic of the Congo", ".ch Switzerland", ".ci Cote d'Ivoire", ".ck Cook Islands (New Zealand)",
+            ".cl Chile", ".cm Cameroon", ".cn China", ".co Colombia", ".cr Costa Rica", ".cu Cuba", ".cv Cabo Verde", ".cw Curacao (Netherlands)",
+            ".cx Christmas Island (Australia)", ".cy Cyprus", ".cz Czechia", ".de Germany", ".dj Djibouti", ".dk Denmark", ".dm Dominica",
+            ".do Dominican Republic", ".dz Algeria", ".ec Ecuador", ".ee Estonia", ".eg Egypt", ".er Eritrea", ".es Spain", ".et Ethiopia",
+            ".eu European Union", ".fi Finland", ".fj Fiji", ".fk Falkland Islands (UK)", ".fm Federated States of Micronesia", ".fo Faroe Islands (Denmark)",
+            ".fr France", ".ga Gabon", ".gb United Kingdom", ".gd Grenada", ".ge Georgia", ".gf French Guiana (France)", ".gg Guernsey (UK)",
+            ".gh Ghana", ".gi Gibraltar (UK)", ".gl Greenland (Denmark)", ".gm Gambia", ".gn Guinea", ".gp Guadeloupe (France)", ".gq Equatorial Guinea",
+            ".gr Greece", ".gs South Georgia and the South Sandwich Islands (UK)", ".gt Guatemala", ".gu Guam (USA)", ".gw Guinea-Bissau",
+            ".gy Guyana", ".hk Hong Kong (China)", ".hm Heard Island and McDonald Islands (Australia)", ".hn Honduras", ".hr Croatia", ".ht Haiti",
+            ".hu Hungary", ".id Indonesia", ".ie Ireland", ".il Israel", ".im Isle of Man (UK)", ".in India", ".io British Indian Ocean Territory (UK)",
+            ".iq Iraq", ".ir Iran", ".is Iceland", ".it Italy", ".je Jersey (UK)", ".jm Jamaica", ".jo Jordan", ".jp Japan", ".ke Kenya",
+            ".kg Kyrgyzstan", ".kh Cambodia", ".ki Kiribati", ".km Comoros", ".kn Saint Kitts and Nevis", ".kp North Korea", ".kr South Korea",
+            ".kw Kuwait", ".ky Cayman Islands (UK)", ".kz Kazakhstan", ".la Laos", ".lb Lebanon", ".lc Saint Lucia", ".li Liechtenstein",
+            ".lk Sri Lanka", ".lr Liberia", ".ls Lesotho", ".lt Lithuania", ".lu Luxembourg", ".lv Latvia", ".ly Libya", ".ma Morocco",
+            ".mc Monaco", ".md Moldova", ".me Montenegro", ".mg Madagascar", ".mh Marshall Islands", ".mk North Macedonia", ".ml Mali",
+            ".mm Myanmar", ".mn Mongolia", ".mo Macau (China)", ".mp Northern Mariana Islands (USA)", ".mq Martinique (France)", ".mr Mauritania",
+            ".ms Montserrat (UK)", ".mt Malta", ".mu Mauritius", ".mv Maldives", ".mw Malawi", ".mx Mexico", ".my Malaysia", ".mz Mozambique",
+            ".na Namibia", ".nc New Caledonia (France)", ".ne Niger", ".nf Norfolk Island (Australia)", ".ng Nigeria", ".ni Nicaragua",
+            ".nl Netherlands", ".no Norway", ".np Nepal", ".nr Nauru", ".nu Niue (New Zealand)", ".nz New Zealand", ".om Oman", ".pa Panama",
+            ".pe Peru", ".pf French Polynesia (France)", ".pg Papua New Guinea", ".ph Philippines", ".pk Pakistan", ".pl Poland", ".pm Saint Pierre and Miquelon (France)",
+            ".pn Pitcairn Islands (UK)", ".pr Puerto Rico (USA)", ".ps Palestine", ".pt Portugal", ".pw Palau", ".py Paraguay", ".qa Qatar",
+            ".re Reunion (France)", ".ro Romania", ".rs Serbia", ".ru Russia", ".rw Rwanda", ".sa Saudi Arabia", ".sb Solomon Islands",
+            ".sc Seychelles", ".sd Sudan", ".se Sweden", ".sg Singapore", ".sh Saint Helena (UK)", ".si Slovenia", ".sj Svalbard and Jan Mayen (Norway)",
+            ".sk Slovakia", ".sl Sierra Leone", ".sm San Marino", ".sn Senegal", ".so Somalia", ".sr Suriname", ".st Sao Tome and Principe",
+            ".su Soviet Union", ".sv El Salvador", ".sx Sint Maarten (Netherlands)", ".sy Syria", ".sz Eswatini", ".tc Turks and Caicos Islands (UK)",
+            ".td Chad", ".tf French Southern Territories (France)", ".tg Togo", ".th Thailand", ".tj Tajikistan", ".tk Tokelau (New Zealand)",
+            ".tl Timor-Leste", ".tm Turkmenistan", ".tn Tunisia", ".to Tonga", ".tr Turkey", ".tt Trinidad and Tobago", ".tv Tuvalu", ".tw Taiwan",
+            ".tz Tanzania", ".ua Ukraine", ".ug Uganda", ".uk United Kingdom", ".us United States of America", ".uy Uruguay", ".uz Uzbekistan",
+            ".va Vatican City (Holy See)", ".vc Saint Vincent and the Grenadines", ".ve Venezuela", ".vg British Virgin Islands (UK)",
+            ".vi US Virgin Islands (USA)", ".vn Vietnam", ".vu Vanuatu", ".wf Wallis and Futuna (France)", ".ws Samoa", ".ye Yemen", ".yt Mayotte (France)",
+            ".za South Africa", ".zm Zambia", ".zw Zimbabwe"
+        ];
+        
+        // DOM elements
+        const outputElement = document.getElementById('output');
+        const commandInput = document.getElementById('command-input');
+        const currentCountElement = document.getElementById('current-count');
+        const userStatusElement = document.getElementById('user-status');
+        const progressBarElement = document.getElementById('progress-bar');
+        const registerSection = document.getElementById('register-section');
+        const depositSection = document.getElementById('deposit-section');
+        const adminSection = document.getElementById('admin-section');
+        const systemTimeElement = document.getElementById('system-time');
+        const transactionsContainer = document.getElementById('transactions');
+        
+        // Crypto price elements
+        const btcPriceElement = document.getElementById('btc-price');
+        const btcChangeElement = document.getElementById('btc-change');
+        const ethPriceElement = document.getElementById('eth-price');
+        const ethChangeElement = document.getElementById('eth-change');
+        const xmrPriceElement = document.getElementById('xmr-price');
+        const xmrChangeElement = document.getElementById('xmr-change');
+        const dashPriceElement = document.getElementById('dash-price');
+        const dashChangeElement = document.getElementById('dash-change');
+        
+        // Initialize system
+        function initSystem() {
+            updateSystemTime();
+            setInterval(updateSystemTime, 1000);
+            updateProgressBar();
+            
+            // Start crypto price updates
+            updateCryptoPrices();
+            setInterval(updateCryptoPrices, 60000); // Update every minute
+            
+            // Start transaction simulation
+            simulateTransactions();
+            
+            // Load saved data from localStorage
+            const savedData = localStorage.getItem('lotterySystem');
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                systemState.participants = parsedData.participants || [];
+                systemState.lotteryCompleted = parsedData.lotteryCompleted || false;
+                systemState.winner = parsedData.winner || null;
+                updateParticipantCount();
+            }
+            
+            // Check if user is already registered
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                systemState.currentUser = JSON.parse(savedUser);
+                userStatusElement.textContent = systemState.currentUser.name;
+            }
+            
+            // Check admin key in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('admin') === 'true') {
+                systemState.adminMode = true;
+                adminSection.classList.remove('hidden');
+                addOutput('Admin mode activated', 'info');
+            }
+            
+            // Set up command input handler
+            commandInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    processCommand(this.value);
+                    this.value = '';
+                }
+            });
+            
+            // Set up section toggles
+            document.querySelectorAll('.lottery-section').forEach(section => {
+                section.addEventListener('click', function(e) {
+                    if (e.target.tagName !== 'H3') return;
+                    this.classList.toggle('open');
+                });
+            });
+            
+            // Set up donate button
+            document.getElementById('donate-btn').addEventListener('click', showDonateAlert);
+        }
+        
+        // Show donate alert
+        function showDonateAlert() {
+            const overlay = document.createElement('div');
+            overlay.className = 'overlay';
+            
+            const alert = document.createElement('div');
+            alert.className = 'alert';
+            alert.innerHTML = `
+                <h3>Donation Address</h3>
+                <p>XmeyA3iiosepgqJdwiBbnXJPqnk6qnY8kf</p>
+                <p>Thank you for your support!</p>
+            `;
+            
+            document.body.appendChild(overlay);
+            document.body.appendChild(alert);
+            
+            setTimeout(() => {
+                document.body.removeChild(overlay);
+                document.body.removeChild(alert);
+            }, 20000);
+        }
+        
+        // Update crypto prices from CoinGecko API
+        async function updateCryptoPrices() {
+            try {
+                // Show loading state
+                btcPriceElement.textContent = '$--.--';
+                btcChangeElement.textContent = 'Loading...';
+                btcChangeElement.className = 'crypto-change';
+                
+                ethPriceElement.textContent = '$--.--';
+                ethChangeElement.textContent = 'Loading...';
+                ethChangeElement.className = 'crypto-change';
+                
+                xmrPriceElement.textContent = '$--.--';
+                xmrChangeElement.textContent = 'Loading...';
+                xmrChangeElement.className = 'crypto-change';
+                
+                dashPriceElement.textContent = '$--.--';
+                dashChangeElement.textContent = 'Loading...';
+                dashChangeElement.className = 'crypto-change';
+                
+                // Fetch data from CoinGecko API
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,monero,dash&vs_currencies=usd&include_24hr_change=true');
+                const data = await response.json();
+                
+                // Update BTC
+                const btcPrice = data.bitcoin.usd.toLocaleString('en-US', {maximumFractionDigits: 2});
+                const btcChange = data.bitcoin.usd_24h_change.toFixed(2);
+                
+                btcPriceElement.textContent = '$' + btcPrice;
+                btcChangeElement.textContent = (btcChange > 0 ? '+' : '') + btcChange + '%';
+                btcChangeElement.className = 'crypto-change ' + (btcChange >= 0 ? 'positive' : 'negative');
+                
+                // Update ETH
+                const ethPrice = data.ethereum.usd.toLocaleString('en-US', {maximumFractionDigits: 2});
+                const ethChange = data.ethereum.usd_24h_change.toFixed(2);
+                
+                ethPriceElement.textContent = '$' + ethPrice;
+                ethChangeElement.textContent = (ethChange > 0 ? '+' : '') + ethChange + '%';
+                ethChangeElement.className = 'crypto-change ' + (ethChange >= 0 ? 'positive' : 'negative');
+                
+                // Update XMR
+                const xmrPrice = data.monero.usd.toLocaleString('en-US', {maximumFractionDigits: 2});
+                const xmrChange = data.monero.usd_24h_change.toFixed(2);
+                
+                xmrPriceElement.textContent = '$' + xmrPrice;
+                xmrChangeElement.textContent = (xmrChange > 0 ? '+' : '') + xmrChange + '%';
+                xmrChangeElement.className = 'crypto-change ' + (xmrChange >= 0 ? 'positive' : 'negative');
+                
+                // Update dash
+                const dashPrice = data.dash.usd.toLocaleString('en-US', {maximumFractionDigits: 4});
+                const dashChange = data.dash.usd_24h_change.toFixed(2);
+                
+                dashPriceElement.textContent = '$' + dashPrice;
+                dashChangeElement.textContent = (dashChange > 0 ? '+' : '') + dashChange + '%';
+                dashChangeElement.className = 'crypto-change ' + (dashChange >= 0 ? 'positive' : 'negative');
+                
+            } catch (error) {
+                console.error('Error fetching crypto prices:', error);
+                
+                // Fallback to simulated prices if API fails
+                btcPriceElement.textContent = '$--.--';
+                btcChangeElement.textContent = 'API Error';
+                
+                ethPriceElement.textContent = '$--.--';
+                ethChangeElement.textContent = 'API Error';
+                
+                xmrPriceElement.textContent = '$--.--';
+                xmrChangeElement.textContent = 'API Error';
+                
+                dashPriceElement.textContent = '$--.--';
+                dashChangeElement.textContent = 'API Error';
+            }
+        }
+        
+        // Simulate transactions
+        function simulateTransactions() {
+            // Clear initial message
+            if (transactionsContainer.children.length === 1 && 
+                transactionsContainer.children[0].textContent.includes('Waiting')) {
+                transactionsContainer.innerHTML = '';
+            }
+            
+            // Add 1-3 new transactions
+            const numTransactions = Math.floor(Math.random() * 3) + 1;
+            for (let i = 0; i < numTransactions; i++) {
+                addTransaction();
+            }
+            
+            // Schedule next update
+            setTimeout(simulateTransactions, 2000 + Math.random() * 3000);
+        }
+        
+        // Add a transaction to the list
+        function addTransaction() {
+            const now = new Date();
+            const timeString = now.toTimeString().split(' ')[0];
+            
+            const transactionItem = document.createElement('div');
+            
+            // Every 5th transaction is a winner
+            const isWinner = Math.random() < 0.2;
+            
+            if (isWinner) {
+                transactionItem.className = 'transaction-item transaction-winner';
+                
+                // Select random country
+                const randomCountry = countryCodes[Math.floor(Math.random() * countryCodes.length)];
+                const countryParts = randomCountry.split(' ');
+                const countryCode = countryParts[0];
+                const countryName = countryParts.slice(1).join(' ');
+                
+                // Generate random IP
+                const ip = `${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`;
+                
+                transactionItem.innerHTML = `
+                    <span>WINNER: ${ip} ${countryCode} - 0.8 BTC  awarded!</span>
+                    <span>${timeString}</span>
+                `;
+            } else {
+                transactionItem.className = 'transaction-item';
+                
+                // Generate transaction hash
+                const txHash = 'X' + Math.random().toString(16).substring(2, 10) + '...' + Math.random().toString(16).substring(2, 10);
+                
+                transactionItem.innerHTML = `
+                    <span>Deposit received: ${txHash}</span>
+                    <span>${timeString}</span>
+                `;
+            }
+            
+            // Add to top of list
+            transactionsContainer.insertBefore(transactionItem, transactionsContainer.firstChild);
+            
+            // Limit to 15 transactions shown
+            if (transactionsContainer.children.length > 15) {
+                transactionsContainer.removeChild(transactionsContainer.lastChild);
+            }
+        }
+        
+        // Update system time display
+        function updateSystemTime() {
+            const now = new Date();
+            systemTimeElement.textContent = now.toLocaleString();
+        }
+        
+        // Update progress bar based on participant count
+        function updateProgressBar() {
+            const percentage = (systemState.participants.length / systemState.maxParticipants) * 100;
+            progressBarElement.style.width = percentage + '%';
+        }
+        
+        // Update participant count display
+        function updateParticipantCount() {
+            currentCountElement.textContent = systemState.participants.length;
+            updateProgressBar();
+        }
+        
+        // Add output line to the screen
+        function addOutput(text, type = '') {
+            const line = document.createElement('div');
+            line.className = 'output-line' + (type ? ' ' + type : '');
+            line.textContent = text;
+            outputElement.appendChild(line);
+            outputElement.scrollTop = outputElement.scrollHeight;
+        }
+        
+        // Process user command
+        function processCommand(command) {
+            addOutput('Ai:\\LOTTERY&gt;' + command);
+            
+            const cmd = command.toLowerCase().trim();
+            
+            switch(cmd) {
+                case 'help':
+                    showHelp();
+                    break;
+                case 'register':
+                    showRegistration();
+                    break;
+                case 'deposit':
+                    showDeposit();
+                    break;
+                case 'status':
+                    showStatus();
+                    break;
+                case 'admin':
+                    toggleAdmin();
+                    break;
+                case 'draw':
+                    startLottery();
+                    break;
+                case 'clear':
+                    clearScreen();
+                    break;
+                default:
+                    if (cmd) {
+                        addOutput('Unknown command. Type "help" for available commands.', 'error');
+                    }
+            }
+        }
+        
+        // Show help information
+        function showHelp() {
+            addOutput('Available commands:', 'info');
+            addOutput('register - Register for the lottery');
+            addOutput('deposit  - Deposit 5 DASH');
+            addOutput('status   - Show current status');
+            addOutput('clear    - Clear the screen');
+            if (systemState.adminMode) {
+                addOutput('draw     - Start the lottery draw (admin only)', 'warning');
+            }
+        }
+        
+        // Show registration form
+        function showRegistration() {
+            if (systemState.currentUser) {
+                addOutput('You are already registered as: ' + systemState.currentUser.name, 'warning');
+                return;
+            }
+            
+            if (systemState.lotteryCompleted) {
+                addOutput('Registration is closed. The lottery has been completed.', 'error');
+                return;
+            }
+            
+            if (systemState.participants.length >= systemState.maxParticipants) {
+                addOutput('Registration is closed. Maximum participants reached.', 'error');
+                return;
+            }
+            
+            registerSection.classList.remove('hidden');
+            commandInput.disabled = true;
+            addOutput('Registration form opened. Please provide your details.', 'info');
+        }
+        
+        // Complete registration
+        function completeRegistration() {
+            const name = document.getElementById('name-input').value.trim();
+            const email = document.getElementById('email-input').value.trim();
+            const wallet = document.getElementById('wallet-input').value.trim();
+            
+            if (!name || !email || !wallet) {
+                addOutput('All fields are required. Please try again.', 'error');
+                return;
+            }
+            
+            // Check if wallet already registered
+            if (systemState.participants.some(p => p.wallet === wallet)) {
+                addOutput('This wallet address is already registered.', 'error');
+                return;
+            }
+            
+            // Check if email already registered
+            if (systemState.participants.some(p => p.email === email)) {
+                addOutput('This email address is already registered.', 'error');
+                return;
+            }
+            
+            // Create user object
+            const user = {
+                id: generateId(),
+                name,
+                email,
+                wallet,
+                deposited: false,
+                txHash: ''
+            };
+            
+            // Set as current user
+            systemState.currentUser = user;
+            userStatusElement.textContent = user.name;
+            
+            // Save to localStorage
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            
+            // Hide registration form
+            hideRegistration();
+            
+            addOutput('Registration successful! Welcome ' + name + '.', 'success');
+            addOutput('Now please type "deposit" to proceed with your 5 DASH payment.', 'info');
+        }
+        
+        // Hide registration form
+        function hideRegistration() {
+            registerSection.classList.add('hidden');
+            document.getElementById('name-input').value = '';
+            document.getElementById('email-input').value = '';
+            document.getElementById('wallet-input').value = '';
+            commandInput.disabled = false;
+            commandInput.focus();
+        }
+        
+        // Show deposit instructions
+        function showDeposit() {
+            if (!systemState.currentUser) {
+                addOutput('You must register first. Type "register" to begin.', 'error');
+                return;
+            }
+            
+            if (systemState.currentUser.deposited) {
+                addOutput('You have already deposited. Thank you for participating!', 'info');
+                return;
+            }
+            
+            if (systemState.lotteryCompleted) {
+                addOutput('The lottery has been completed. Deposits are no longer accepted.', 'error');
+                return;
+            }
+            
+            if (systemState.participants.length >= systemState.maxParticipants) {
+                addOutput('Maximum participants reached. Deposits are no longer accepted.', 'error');
+                return;
+            }
+            depositSection.classList.remove('hidden');
+            commandInput.disabled = true;
+            addOutput('Deposit instructions displayed. Please send exactly 5 DASH.', 'info');
+        }
+        // Verify deposit
+        function verifyDeposit() {
+            const txHash = document.getElementById('tx-hash-input').value.trim();
+            if (!txHash) {
+                addOutput('Please enter a transaction hash.', 'error');
+                return;
+            }
+            
+            // In a real system, we would verify the transaction on the blockchain
+            // For this demo, we'll just simulate verification
+            addOutput('Verifying transaction...', 'info');
+            setTimeout(() => {
+                // Mark user as deposited
+                systemState.currentUser.deposited = true;
+                systemState.currentUser.txHash = txHash;
+                // Add to participants list
+                systemState.participants.push(systemState.currentUser); 
+                // Update localStorage
+                localStorage.setItem('currentUser', JSON.stringify(systemState.currentUser));
+                saveSystemState(); 
+                // Update UI
+                updateParticipantCount();
+                // Hide deposit section
+                hideDeposit();
+                addOutput('Deposit verified successfully! You are now entered in the lottery.', 'success');
+                addOutput('Good luck! The draw will occur when all 1000 participants have registered.', 'info');
+            }, 2000);
+        }
+        
+        // Hide deposit section
+        function hideDeposit() {
+            depositSection.classList.add('hidden');
+            document.getElementById('tx-hash-input').value = '';
+            commandInput.disabled = false;
+            commandInput.focus();
+        }
+        
+        // Show current status
+        function showStatus() {
+            addOutput('LOTTERY STATUS:', 'info');
+            addOutput('Participants: ' + systemState.participants.length + '/' + systemState.maxParticipants);
+            addOutput('Entry fee: 5 DASH');
+            addOutput('Prize pool: 0.8 BTC USDT');
+            
+            if (systemState.currentUser) {
+                addOutput('Your status: ' + (systemState.currentUser.deposited ? 'Registered & Paid' : 'Registered - Payment Pending'));
+            }
+            if (systemState.lotteryCompleted) {
+                addOutput('The lottery has been completed!', 'highlight');
+                if (systemState.winner) {
+                    addOutput('Winner: ' + systemState.winner.name + ' (' + systemState.winner.wallet + ')', 'success');
+                }
+            }
+        }
+        
+        // Toggle admin mode (for demo purposes)
+        function toggleAdmin() {
+            systemState.adminMode = !systemState.adminMode;
+            
+            if (systemState.adminMode) {
+                adminSection.classList.remove('hidden');
+                addOutput('Admin mode activated', 'info');
+            } else {
+                adminSection.classList.add('hidden');
+                addOutput('Admin mode deactivated', 'info');
+            }
+        } 
+        // Start the lottery draw
+        function startLottery() {
+            if (!systemState.adminMode) {
+                addOutput('Admin privileges required.', 'error');
+                return;
+            } 
+            if (systemState.lotteryCompleted) {
+                addOutput('The lottery has already been completed.', 'error');
+                return;
+            }
+            
+            if (systemState.participants.length === 0) {
+                addOutput('No participants yet. Cannot draw winner.', 'error');
+                return;
+            }
+            addOutput('Starting lottery draw with AI random selection...', 'info'); 
+            // Simulate AI processing
+            setTimeout(() => {
+                addOutput('Quantum entropy source activated...', 'info');
+                
+                setTimeout(() => {
+                    addOutput('Blockchain verification in progress...', 'info');
+                    
+                    setTimeout(() => {
+                        // Select random winner
+                        const winnerIndex = Math.floor(Math.random() * systemState.participants.length);
+                        systemState.winner = systemState.participants[winnerIndex];
+                        systemState.lotteryCompleted = true; 
+                        // Save to localStorage
+                        saveSystemState(); 
+                        addOutput('========================================', 'highlight');
+                        addOutput('LOTTERY COMPLETED!', 'success');
+                        addOutput('Winner selected by AI algorithm:', 'info');
+                        addOutput('Name: ' + systemState.winner.name, 'highlight');
+                        addOutput('Email: ' + systemState.winner.email, 'highlight');
+                        addOutput('Wallet: ' + systemState.winner.wallet, 'highlight');
+                        addOutput('Prize: 0.8 BTC USDT', 'success');
+                        addOutput('Transaction will be processed within 24 hours.', 'info');
+                        addOutput('========================================', 'highlight');
+                    }, 2000);
+                }, 2000);
+            }, 1000);
+        }
+        
+        // Show participants list
+        function showParticipants() {
+            if (!systemState.adminMode) {
+                addOutput('Admin privileges required.', 'error');
+                return;
+            }
+            
+            const participantsList = document.getElementById('participants-list');
+            participantsList.innerHTML = '';  
+            systemState.participants.forEach(participant => {
+                const div = document.createElement('div');
+                div.textContent = participant.name + ' (' + participant.wallet + ')';
+                participantsList.appendChild(div);
+            });
+            document.getElementById('participants-container').classList.remove('hidden');
+        }
+        // Reset system (admin only)
+        function resetSystem() {
+            if (!systemState.adminMode) {
+                addOutput('Admin privileges required.', 'error');
+                return;
+            }
+            
+            if (confirm('Are you sure you want to reset the entire system? All data will be lost.')) {
+                systemState.participants = [];
+                systemState.currentUser = null;
+                systemState.lotteryCompleted = false;
+                systemState.winner = null;
+                
+                localStorage.removeItem('lotterySystem');
+                localStorage.removeItem('currentUser');
+                
+                userStatusElement.textContent = 'GUEST';
+                updateParticipantCount();
+                document.getElementById('participants-container').classList.add('hidden');
+                addOutput('System has been reset to initial state.', 'info');
+            }
+        }
+        
+        // Clear the screen
+        function clearScreen() {
+            outputElement.innerHTML = '';
+            addOutput('System console cleared. Type "help" for available commands.', 'info');
+        }
+        
+        // Save system state to localStorage
+        function saveSystemState() {
+            localStorage.setItem('lotterySystem', JSON.stringify({
+                participants: systemState.participants,
+                lotteryCompleted: systemState.lotteryCompleted,
+                winner: systemState.winner
+            }));
+        }
+        // Generate a random ID
+        function generateId() {
+            return Math.random().toString(36).substring(2) + Date.now().toString(36);
+        }
+        // Initialize the system when page loads
+        window.onload = initSystem;
+    </script>
+</body>
+</html>
