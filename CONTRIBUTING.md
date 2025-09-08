@@ -1,4 +1,4 @@
-# Guide to Contributing to the AI Lottery Project
+# Guide to Contributing to the AI Lottery Project "BlockchainLotteryAI"
 
 Thank you for your interest in contributing to the world's first AI-powered blockchain lottery!
 
