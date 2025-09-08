@@ -2,9 +2,14 @@
   "name": "ai-blockchain-lottery",
   "version": "1.0.0",
   "description": "World's First AI-Powered Blockchain Lottery",
-  "scripts": {
+ "scripts": {
     "test": "jest",
-    "test:ci": "jest --ci --coverage"
+    "test:unit": "jest tests/unit/",
+    "test:integration": "jest tests/integration/",
+    "test:e2e": "jest tests/e2e/",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --ci --coverage --reporters=default --reporters=jest-junit"
   },
   "devDependencies": {
     "jest": "^29.0.0",
