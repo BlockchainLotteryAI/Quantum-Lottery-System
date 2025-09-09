@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Lottery AI - API Interface</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .dos-container {
+            border: 2px solid #0f0;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #001100;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #0f0;
+            padding-bottom: 10px;
+        }
+        
+        .transaction-box {
+            height: 150px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        
+        .winners-box {
+            height: 120px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        
+        .countries-box {
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        
+        .faq-box {
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        
+        .transaction {
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .deposit {
+            color: #888;
+        }
+        
+        .withdrawal {
+            color: #0f0;
+        }
+        
+        .winner {
+            color: #0f0;
+            margin-bottom: 5px;
+            animation: blink 2s infinite;
+        }
+        
+        .country {
+            margin-bottom: 5px;
+            padding: 3px;
+        }
+        
+        .connected {
+            color: #fff;
+        }
+        
+        .disconnected {
+            color: #f00;
+            text-decoration: line-through;
+        }
+        
+        .highlight {
+            color: #0f0;
+            background-color: #002200;
+        }
+        
+        .faq-item {
+            margin-bottom: 15px;
+            border-left: 3px solid #0f0;
+            padding-left: 10px;
+        }
+        
+        .faq-question {
+            color: #0f0;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .faq-answer {
+            color: #aaa;
+            margin-left: 10px;
+        }
+        
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .blink {
+            animation: blink 1s infinite;
+        }
+        
+        .command-line {
+            background-color: #000;
+            color: #0f0;
+            border: 1px solid #0f0;
+            padding: 5px;
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        .cursor {
+            animation: blink 1s infinite;
+            background-color: #0f0;
+            width: 8px;
+            height: 15px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .warning {
+            border: 1px solid #f00;
+            color: #f00;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #110000;
+            text-align: center;
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            z-index: 1000;
+        }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 999;
+        }
+        
+        .back-button {
+            background-color: #002200;
+            color: #0f0;
+            border: 1px solid #0f0;
+            padding: 10px 20px;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            margin-top: 20px;
+            display: block;
+            width: 200px;
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .back-button:hover {
+            background-color: #004400;
+        }
+        
+        .crypto-badge {
+            display: inline-block;
+            padding: 2px 5px;
+            margin-right: 5px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        
+        .btc { background-color: #f7931a; color: #000; }
+        .eth { background-color: #627eea; color: #fff; }
+        .xmr { background-color: #f26822; color: #fff; }
+        .dash { background-color: #008de4; color: #fff; }
+        .usdt { background-color: #26a17b; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+    <div class="warning" id="warning">
+        <h3>⚠️ WARNING ⚠️</h3>
+        <p>Any attempt to copy, duplicate, or cheat the system is strictly prohibited.</p>
+        <p>All responsibility lies with the person attempting fraud.</p>
+        <p>Transactions are monitored and fraudulent activities will be prosecuted.</p>
+    </div>
+    
+    <div class="header">
+        <h1>BLOCKCHAIN LOTTERY AI - API INTERFACE</h1>
+        <p>PROVIDABLY FAIR BLOCKCHAIN LOTTERY SYSTEM</p>
+    </div>
+    
+    <div class="dos-container">
+        <h2>CONFIRMED TRANSACTIONS <span class="blink">_</span></h2>
+        <div class="transaction-box" id="transactionBox">
+            <!-- Transactions will be added here dynamically -->
+        </div>
+    </div>
+    
+    <div class="dos-container">
+        <h2>WINNERS OF 0.8 BTC <span class="blink">_</span></h2>
+        <div class="winners-box" id="winnersBox">
+            <!-- Winners will be added here dynamically -->
+        </div>
+    </div>
+    
+    <div class="dos-container">
+        <h2>COUNTRIES & DOMAINS STATUS <span class="blink">_</span></h2>
+        <div class="countries-box" id="countriesBox">
+            <!-- Countries will be added here dynamically -->
+        </div>
+    </div>
+    
+    <div class="dos-container">
+        <h2>FREQUENTLY ASKED QUESTIONS <span class="blink">_</span></h2>
+        <div class="faq-box" id="faqBox">
+            <!-- FAQ will be added here dynamically -->
+        </div>
+    </div>
+    
+    <div class="command-line">
+        <span>C:\LOTTERY&gt;</span><span class="cursor"></span>
+    </div>
+    
+    <button class="back-button" onclick="window.history.back()">BACK TO PREVIOUS PAGE</button>
+
+    <script>
+        // Sample data
+        const countries = [
+            { name: "United States", domain: ".us", connected: true },
+            { name: "Germany", domain: ".de", connected: true },
+            { name: "Japan", domain: ".jp", connected: true },
+            { name: "United Kingdom", domain: ".uk", connected: true },
+            { name: "Australia", domain: ".au", connected: true },
+            { name: "Canada", domain: ".ca", connected: true },
+            { name: "France", domain: ".fr", connected: true },
+            { name: "Brazil", domain: ".br", connected: true },
+            { name: "Netherlands", domain: ".nl", connected: true },
+            { name: "Singapore", domain: ".sg", connected: true }
+        ];
+        
+        const winners = [
+            "User_4Xf7gH",
+            "User_kJ9mN2",
+            "User_pQ3rT8",
+            "User_wL1zY6",
+            "User_bR5vU9",
+            "User_tS8nM4",
+            "User_eD2cX7",
+            "User_hF6jK3"
+        ];
+        
+        const cryptoData = {
+            btc: { amount: "0.001", badge: "BTC", class: "btc" },
+            eth: { amount: "0.026", badge: "ETH", class: "eth" },
+            xmr: { amount: "0.41", badge: "XMR", class: "xmr" },
+            dash: { amount: "5", badge: "DASH", class: "dash" },
+            usdt: { amount: "100", badge: "USDT", class: "usdt" }
+        };
+        
+        const faqData = [
+            {
+                category: "Category 1: General Questions & How It Works",
+                questions: [
+                    {
+                        question: "How do I participate in your lottery?",
+                        answer: "Participating in our lottery is very simple:\n1. Go to our website BlockchainLotteryAI.com.\n2. Create an account or log in to your existing one.\n3. Top up your wallet with your preferred cryptocurrency (e.g., BTC, ETH, USDT).\n4. Select and purchase tickets for the current draw.\n5. Wait for the draw time. We will notify you of any wins on the website and via a Telegram bot notification!"
+                    },
+                    {
+                        question: "Which currencies are supported for buying tickets and receiving prizes?",
+                        answer: "We currently support major cryptocurrencies like Bitcoin (BTC), Ethereum (ETH), and Tether (USDT). This list will be expanded in the future. Please check the 'Wallet' section in your user panel for the precise list and supported networks."
+                    },
+                    {
+                        question: "What is the minimum and maximum bet amount?",
+                        answer: "The minimum purchase for a single ticket is equivalent to 10 USDT. There is no limit to the number of tickets you can buy! The more tickets you purchase, the higher your chances of winning."
+                    }
+                ]
+            },
+            {
+                category: "Category 2: Technical & Security Questions (Crucial for Building Trust)",
+                questions: [
+                    {
+                        question: "How can I be sure the draw is fair?",
+                        answer: "We use blockchain technology to guarantee complete fairness.\n- Smart Contract: All draw operations are executed by a public and auditable smart contract.\n- Provably Fair: You can view the hash of the draw result before it starts on the blockchain. After the draw is completed, by providing the seeds, anyone can independently verify the accuracy of the result.\n- Transparency: All transactions and results are recorded on the blockchain and are traceable."
+                    },
+                    {
+                        question: "How secure are my data and funds?",
+                        answer: "User security is our top priority.\n- Privacy: We only use your personal information to provide services and do not sell it to any third parties.\n- Funds Security: Over 95% of user funds are held in offline Cold Storage wallets, which are completely secure and inaccessible to hackers.\n- Two-Factor Authentication (2FA): You can enable 2FA for your account login to maximize security."
+                    },
+                    {
+                        question: "What is the role of Artificial Intelligence (AI) in this lottery?",
+                        answer: "Our AI serves several key roles:\n- Pattern Analysis: To predict and optimize prize pool sizes and the number of winners.\n- Personalized User Experience: Suggesting tickets and games based on user behavior.\n- Smart Support: Answering common user questions through a chatbot.\n- Fraud Detection: Monitoring activities to identify and prevent suspicious behavior.\n(Important Note: AI is not used to select the winner; winner selection is completely random and on-chain to build user trust)."
+                    }
+                ]
+            },
+            {
+                category: "Category 3: Payment & Prize Questions",
+                questions: [
+                    {
+                        question: "How and when will I receive my prize?",
+                        answer: "Prizes are paid out fully automatically and instantly.\n- Immediately after the draw is completed and the result is confirmed, the prize is credited directly to your internal wallet on the site.\n- You can view your prize in your account and withdraw it to your personal wallet.\n- Prize withdrawal processing takes up to 24 business hours."
+                    },
+                    {
+                        question: "Do I have to pay any fees to receive my prize?",
+                        answer: "No. The amount you win as a prize is net; we do not deduct any fees from the prize itself. Only the standard blockchain network fee for transferring the prize to an external wallet will be deducted from the withdrawal amount."
+                    },
+                    {
+                        question: "What should I do if I encounter a problem while buying a ticket or withdrawing my prize?",
+                        answer: "If any issues occur, the first step is to check the 'Transactions' section in your user panel. If the transaction status is 'Failed' or your prize has not been credited, please contact our support team via one of the following methods:\n- Telegram Support ID: [@YourSupportUsername]\n- Support Ticket on the website: Use the 'Support' section in your user account.\n- Email: support@blockchainlotteryai.com\nPlease provide your transaction ID (TXID) or purchase ID."
+                    }
+                ]
+            },
+            {
+                category: "Category 4: Legal Questions",
+                questions: [
+                    {
+                        question: "Is this service legal in my country?",
+                        answer: "This depends on the local laws of your country. It is your responsibility to ensure that participating in online lotteries is legal in your region. We do not provide services to users from jurisdictions where it is explicitly prohibited. We use KYC/AML procedures to comply with regulations."
+                    },
+                    {
+                        question: "Do I need to verify my identity (KYC) to participate?",
+                        answer: "Usually, no KYC is required to buy tickets and participate in the draw. However, for withdrawing large prize amounts (e.g., over $10,000), we may request you to verify your identity by submitting documents (like a passport) to comply with international Anti-Money Laundering (AML) regulations."
+                    }
+                ]
+            }
+        ];
+        
+        // Generate random TXID
+        function generateTXID() {
+            return 'txid_' + Math.random().toString(36).substr(2, 16) + Math.random().toString(36).substr(2, 16);
+        }
+        
+        // Add a transaction
+        function addTransaction(isDeposit) {
+            const txBox = document.getElementById('transactionBox');
+            const txDiv = document.createElement('div');
+            txDiv.className = `transaction ${isDeposit ? 'deposit' : 'withdrawal'}`;
+            
+            const txid = generateTXID();
+            
+            if (isDeposit) {
+                // Select a random cryptocurrency
+                const cryptos = Object.keys(cryptoData);
+                const crypto = cryptos[Math.floor(Math.random() * cryptos.length)];
+                const cryptoInfo = cryptoData[crypto];
+                
+                const amount = cryptoInfo.amount;
+                const type = 'DEPOSIT';
+                
+                txDiv.innerHTML = `${new Date().toLocaleTimeString()} - ${type} - <span class="crypto-badge ${cryptoInfo.class}">${cryptoInfo.badge}</span> ${amount} - ${txid}`;
+            } else {
+                const amount = '0.800';
+                const type = 'WITHDRAWAL';
+                
+                txDiv.innerHTML = `${new Date().toLocaleTimeString()} - ${type} - <span class="crypto-badge btc">BTC</span> ${amount} - ${txid}`;
+            }
+            
+            txBox.appendChild(txDiv);
+            txBox.scrollTop = txBox.scrollHeight;
+        }
+        
+        // Add a winner
+        function addWinner() {
+            const winnerBox = document.getElementById('winnersBox');
+            const winnerDiv = document.createElement('div');
+            winnerDiv.className = 'winner';
+            
+            const winner = winners[Math.floor(Math.random() * winners.length)];
+            winnerDiv.innerHTML = `${new Date().toLocaleDateString()} - ${winner} - <span class="crypto-badge btc">BTC</span> 0.800`;
+            winnerBox.appendChild(winnerDiv);
+            winnerBox.scrollTop = winnerBox.scrollHeight;
+        }
+        
+        // Update countries display
+        function updateCountries() {
+            const countriesBox = document.getElementById('countriesBox');
+            countriesBox.innerHTML = '';
+            
+            // Randomly change some countries' status
+            const randomIndices = [];
+            while (randomIndices.length < 3) {
+                const r = Math.floor(Math.random() * countries.length);
+                if (randomIndices.indexOf(r) === -1) randomIndices.push(r);
+            }
+            
+            // Highlight one random country
+            const highlightIndex = Math.floor(Math.random() * countries.length);
+            
+            countries.forEach((country, index) => {
+                const countryDiv = document.createElement('div');
+                countryDiv.className = `country ${country.connected ? 'connected' : 'disconnected'}`;
+                
+                // Randomly disconnect some countries
+                if (randomIndices.includes(index)) {
+                    country.connected = !country.connected;
+                }
+                
+                // Highlight one country
+                if (index === highlightIndex) {
+                    countryDiv.className += ' highlight';
+                }
+                
+                countryDiv.textContent = `${country.name} (${country.domain}) - ${country.connected ? 'CONNECTED' : 'DISCONNECTED'}`;
+                countriesBox.appendChild(countryDiv);
+            });
+        }
+        
+        // Display FAQ
+        function displayFAQ() {
+            const faqBox = document.getElementById('faqBox');
+            faqBox.innerHTML = '';
+            
+            faqData.forEach(category => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'faq-category';
+                categoryDiv.innerHTML = `<h3>${category.category}</h3>`;
+                faqBox.appendChild(categoryDiv);
+                
+                category.questions.forEach(qa => {
+                    const faqItem = document.createElement('div');
+                    faqItem.className = 'faq-item';
+                    
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'faq-question';
+                    questionDiv.textContent = qa.question;
+                    
+                    const answerDiv = document.createElement('div');
+                    answerDiv.className = 'faq-answer';
+                    answerDiv.innerHTML = qa.answer.replace(/\n/g, '<br>');
+                    
+                    faqItem.appendChild(questionDiv);
+                    faqItem.appendChild(answerDiv);
+                    faqBox.appendChild(faqItem);
+                });
+            });
+        }
+        
+        // Show warning message
+        function showWarning() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('warning').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('overlay').style.display = 'none';
+                document.getElementById('warning').style.display = 'none';
+            }, 2000);
+        }
+        
+        // Initial setup
+        function initialize() {
+            // Show warning on page load
+            showWarning();
+            
+            // Add some initial transactions
+            for (let i = 0; i < 5; i++) {
+                addTransaction(true);
+                addTransaction(false);
+            }
+            
+            // Add some initial winners
+            for (let i = 0; i < 3; i++) {
+                addWinner();
+            }
+            
+            // Initial countries display
+            updateCountries();
+            
+            // Display FAQ
+            displayFAQ();
+            
+            // Set intervals
+            setInterval(() => addTransaction(true), 9000); // Deposit every 9 seconds
+            setInterval(() => addTransaction(false), 26000); // Withdrawal every 26 seconds
+            setInterval(() => addWinner(), 26000); // Winner every 26 seconds
+            setInterval(() => updateCountries(), 15000); // Update countries every 15 seconds
+        }
+        
+        // Start the system
+        window.onload = initialize;
+    </script>
+</body>
+</html>
