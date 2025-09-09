@@ -77,4 +77,4 @@ The AI algorithms used are designed to create provable randomness.
 
 ## 📞 Contact Us
 
-For more information, visit our website: ([https://ai-lottery-blockchain]https://blockchainlotteryai.github.io/Quantum-Lottery-System/)
+For more information, visit our website: [https://ai-lottery-blockchain](https://blockchainlotteryai.github.io/Quantum-Lottery-System/)
