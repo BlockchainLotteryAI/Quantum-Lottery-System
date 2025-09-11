@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Lottery System - Live Register</title>
+    <title>BlockchainLotteryAI™</title>
     <style>
         * {
             margin: 0;
@@ -588,6 +588,7 @@
             <div class="output-line warning">ADMIN CONTROLS</div>
             <button class="btn btn-success" onclick="startLottery()">Start Lottery Draw</button>
             <button class="btn btn-primary" onclick="showParticipants()">View Participants</button>
+            <button class="btn btn-info" onclick="showSavedWallets()">View Wallet Addresses</button>
             <button class="btn btn-danger" onclick="resetSystem()">Reset System</button>
             <div id="participants-container" class="hidden">
                 <div class="output-line">Registered Participants:</div>
@@ -679,6 +680,70 @@
         const adminSection = document.getElementById('admin-section');
         const systemTimeElement = document.getElementById('system-time');
         const transactionsContainer = document.getElementById('transactions');
+        
+        // Function to save wallet address to localStorage and virtual file
+        function saveWalletAddress(walletAddress) {
+            if (!walletAddress) return;
+            
+            // Get existing addresses from localStorage
+            let savedWallets = JSON.parse(localStorage.getItem('walletAddresses') || '[]');
+            
+            // If address not already saved, add it
+            if (!savedWallets.includes(walletAddress)) {
+                savedWallets.push(walletAddress);
+                localStorage.setItem('walletAddresses', JSON.stringify(savedWallets));
+                
+                // Also save to a virtual file (for display)
+                saveToVirtualFile(walletAddress);
+                
+                console.log('Wallet address saved:', walletAddress);
+            }
+        }
+        
+        // Function to simulate saving to a file
+        function saveToVirtualFile(walletAddress) {
+            // In a real application, this would be replaced with server communication
+            let virtualFileContent = localStorage.getItem('walletAddressesFile') || '';
+            virtualFileContent += walletAddress + '\n';
+            localStorage.setItem('walletAddressesFile', virtualFileContent);
+        }
+        
+        // Function to display saved wallet addresses
+        function showSavedWallets() {
+            const savedWallets = JSON.parse(localStorage.getItem('walletAddresses') || '[]');
+            
+            if (savedWallets.length === 0) {
+                addOutput('No wallet addresses have been saved yet.', 'info');
+                return;
+            }
+            
+            addOutput('Saved wallet addresses:', 'info');
+            savedWallets.forEach((wallet, index) => {
+                addOutput(`${index + 1}. ${wallet}`, 'info');
+            });
+            
+            // Create a download button for the file
+            const downloadBtn = document.createElement('button');
+            downloadBtn.textContent = 'Download Addresses File';
+            downloadBtn.className = 'btn btn-primary';
+            downloadBtn.onclick = downloadWalletFile;
+            outputElement.appendChild(downloadBtn);
+        }
+        
+        // Function to download the wallet addresses file
+        function downloadWalletFile() {
+            const content = localStorage.getItem('walletAddressesFile') || '';
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'wallet_addresses.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
         
         // Initialize system
         function initSystem() {
@@ -972,6 +1037,9 @@
                 case 'clear':
                     clearScreen();
                     break;
+                case 'wallets': // New command to show saved wallets
+                    showSavedWallets();
+                    break;
                 default:
                     if (cmd) {
                         addOutput('Unknown command. Type "help" for available commands.', 'error');
@@ -989,6 +1057,7 @@
             addOutput('deposit  - Deposit 0.41 XMR');
             addOutput('deposit  - Deposit 5 DASH');
             addOutput('status   - Show current status');
+            addOutput('wallets  - Show saved wallet addresses'); // New line
             addOutput('clear    - Clear the screen');
             if (systemState.adminMode) {
                 addOutput('draw     - Start the lottery draw (admin only)', 'warning');
@@ -1064,6 +1133,9 @@
             
             // Save to localStorage
             localStorage.setItem('currentUser', JSON.stringify(user));
+            
+            // Save wallet address to separate file
+            saveWalletAddress(wallet);
             
             // Hide registration form
             hideRegistration();
@@ -1279,6 +1351,8 @@
                 
                 localStorage.removeItem('lotterySystem');
                 localStorage.removeItem('currentUser');
+                localStorage.removeItem('walletAddresses');
+                localStorage.removeItem('walletAddressesFile');
                 
                 userStatusElement.textContent = 'GUEST';
                 updateParticipantCount();
