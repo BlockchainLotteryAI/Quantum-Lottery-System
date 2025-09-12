@@ -35,8 +35,7 @@ graph TB
     SC -->|Final Result & Data| AI
     AI -->|Audit Log / Anomaly Flag| BC
     SC -->|Payout| User
-
-
+```
 
 ## ⚙️ Installation & Local Development
 
@@ -123,4 +122,3 @@ A: No. The AI is an off-chain monitoring and analysis tool. It cannot stop or al
 
 **Q: What blockchain will this be deployed on?**
 A: The initial development and testing are targeting the Ethereum Virtual Machine (EVM) ecosystem, allowing for potential deployment on Ethereum Mainnet, Layer 2s (Arbitrum, Optimism), or other EVM-compatible chains for scalability.
-```
