@@ -1,19 +1,4 @@
 
-# **A Father's Message to the Future: Why I Built This**
-
-My child once asked me, "Why don't we have luxury cars and a big house? Why do we live like the family of a bank employee?"
-
-Hearing this was heavy for a father. But I know your future will be built on and within this digital world of blockchain.
-
-**To my daughter, Hanna, and to all her generation:**
-
-If you see me consumed by this virtual world of code and concepts, know that this message is for you. I am doing this to show you that some things must be done transparently, out in the open.
-
-I don't care if people play this game a lot or not. I have designed it as 
-**open-source** because the world is full of self-interested actors, but this is a mechanism for **visible justice**.
-
-Every participant can verify the other participants and see the true winner for themselves. My hope is that one day, **justice, blockchain, and artificial intelligence** can work in harmony. Perhaps this project is but a glimpse—a single image—of the kindness and fairness these three forces can create when aligned.
-
 # Quantum Lottery System 🔗🎲⚛️
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
