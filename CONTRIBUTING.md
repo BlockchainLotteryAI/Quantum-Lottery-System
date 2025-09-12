@@ -1,26 +1,21 @@
-# Guide to Contributing to the AI Lottery Project "BlockchainLotteryAI"
+# Contributing to Quantum Lottery System 
 
-Thank you for your interest in contributing to the world's first AI-powered blockchain lottery!
+We love your input! We want to make contributing to this project as easy and transparent as possible.
 
 ## How to Contribute
 
-1. Fork the repository
-2. Create a branch for your feature (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to your branch (`git push origin feature/AmazingFeature`)
-5. Create a Pull Request
+1. **Fork the repo** and create your branch from `main`.
+2. **Make your changes**.
+3. **Test your changes** thoroughly.
+4. **Ensure your code follows the project's style**.
+5. **Submit a pull request** and describe your changes clearly.
 
-## Coding Standards
+## Pull Request Process
 
-- Use consistent formatting
-- Comment your code
-- Write relevant tests
-- Ensure all tests pass
+1. Update the README.md if needed.
+2. Ensure all tests pass.
+3. You may merge the PR once you have the sign-off of at least one other developer.
 
-## Reporting Bugs or Requesting Features
+## Code of Conduct
 
-Use the Issues section to report bugs or suggest new features.
-
-## Questions
-
-For questions, you can create an Issue or contact us through our website.
+Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms (see CODE_OF_CONDUCT.md).
