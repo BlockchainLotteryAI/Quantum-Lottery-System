@@ -1,4 +1,5 @@
-#A Father's Message to the Future: Why I Built This
+
+A Father's Message to the Future: Why I Built This
 My child once asked me, "Why don't we have luxury cars and a big house? Why do we live like a bank employee's family?"
 
 Hearing that was difficult for a father. But I know your future will be built on and within this digital world of blockchain.
