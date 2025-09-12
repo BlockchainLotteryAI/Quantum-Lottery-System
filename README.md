@@ -1,5 +1,3 @@
-
-```markdown
 # Quantum Lottery System 🔗🎲⚛️
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -37,7 +35,8 @@ graph TB
     SC -->|Final Result & Data| AI
     AI -->|Audit Log / Anomaly Flag| BC
     SC -->|Payout| User
-```
+
+
 
 ## ⚙️ Installation & Local Development
 
