@@ -9,13 +9,15 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4  # Updated from v2/v3 to v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
     - name: Setup Node.js
-      uses: actions/setup-node@v4  # Updated from v2/v3 to v4
+      uses: actions/setup-node@v4
       with:
         node-version: '18.x'
         cache: 'npm'
@@ -26,11 +28,8 @@ jobs:
     - name: Run tests
       run: npm test
 
-    - name: Upload test results (if needed)
-      uses: actions/upload-artifact@v4  # Updated from v3 to v4
-      if: always()
+    - name: Upload coverage reports
+      uses: actions/upload-artifact@v4  # CHANGED FROM v3 to v4
       with:
-        name: test-results
-        path: |
-          test-results/
-          coverage/
+        name: coverage-report
+        path: coverage/
