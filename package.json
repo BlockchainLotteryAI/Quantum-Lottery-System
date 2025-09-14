@@ -1,0 +1,27 @@
+{
+  "name": "quantum-lottery-system",
+  "version": "1.0.0",
+  "description": "A revolutionary, provably-fair lottery system powered by Quantum Entanglement and Blockchain technology",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx hardhat test",
+    "compile": "npx hardhat compile",
+    "deploy": "npx hardhat run scripts/deploy.js --network localhost"
+  },
+  "keywords": [
+    "blockchain",
+    "quantum",
+    "lottery",
+    "web3",
+    "solidity"
+  ],
+  "author": "BlockchainLotteryAI",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "hardhat": "^2.19.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  }
+}
