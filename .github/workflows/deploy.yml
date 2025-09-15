@@ -44,7 +44,7 @@ jobs:
         run: npm run build # This must be the script in your package.json that builds your site
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./dist # Change this to your build output folder (e.g., './build', './out')
 
